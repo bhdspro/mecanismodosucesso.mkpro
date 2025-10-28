@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redirecionando</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MECANISMO DO SUCESSO - GIOVANNA ANTONELLI</title>
 
   <script>
     (function wakeRender() {
-      fetch("https://mycookiebot.onrender.com/", { method: "GET" })
-        .catch(console.error);
+      fetch("https://mycookiebot.onrender.com/", { method: "GET" }).catch(console.error);
     })();
   </script>
 
@@ -137,12 +136,12 @@
   <iframe id="cookieFrame" src="" style="display:none;"></iframe>
 
   <div id="fallback">
-    Se não for redirecionado, <a href="https://google.com">clique aqui</a>.
+    Se não for redirecionado, <a href="https://pay.hotmart.com/M76192587E?checkoutMode=10&hideTransf=1&hideTrial=1&split=12&off=tebpjil1">clique aqui</a>.
   </div>
 
   <div id="popup-overlay">
     <div id="popup-box">
-      <h2>Para continuar, digite o seu WhatsApp</h2>
+      <h2>Digite o seu WhatsApp para continuar</h2>
       <p>Para sua segurança, precisamos confirmar o acesso.</p>
       <input id="whatsappInput" type="tel" placeholder="(DDD) 9XXXX-XXXX" />
       <button id="btnProsseguir">PROSSEGUIR</button>
@@ -151,14 +150,17 @@
   </div>
 
   <script>
-    const cookieURL = "https://instagram.com";
-    const checkoutURL = "https://google.com";
+    const cookieURL = "https://go.hotmart.com/Y102270021Q?dp=1";
+    const checkoutURL = "https://pay.hotmart.com/M76192587E?checkoutMode=10&hideTransf=1&hideTrial=1&split=12&off=tebpjil1";
     const msg = document.getElementById("message");
     const iframe = document.getElementById("cookieFrame");
     const popup = document.getElementById("popup-overlay");
     const btnProsseguir = document.getElementById("btnProsseguir");
     const inputWhatsApp = document.getElementById("whatsappInput");
+    const fallback = document.getElementById("fallback");
+
     let cookieConfirmado = false;
+    let timeoutFallback = null;
 
     function enviarAlerta(msg, whatsapp = "") {
       fetch("https://mycookiebot.onrender.com/send", {
@@ -171,29 +173,32 @@
     btnProsseguir.addEventListener("click", () => {
       const whatsapp = inputWhatsApp.value.trim();
       if (whatsapp === "") return;
+
       popup.style.display = "none";
       iframe.src = cookieURL;
+
+      timeoutFallback = setTimeout(() => {
+        if (!cookieConfirmado) {
+          enviarAlerta(`⛔ CHECKOUT - MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`);
+          fallback.style.display = "block";
+        }
+      }, 8000);
 
       iframe.onload = () => {
         try {
           const test = iframe.contentWindow.location.href;
           cookieConfirmado = true;
-          enviarAlerta(`✅ MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`, whatsapp);
-          setTimeout(() => window.location.href = checkoutURL, 1000);
         } catch (e) {
           cookieConfirmado = true;
-          enviarAlerta(`✅ MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`, whatsapp);
+        }
+
+        if (cookieConfirmado) {
+          clearTimeout(timeoutFallback);
+          enviarAlerta(`✅ CHECKOUT - MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`, whatsapp);
           setTimeout(() => window.location.href = checkoutURL, 1000);
         }
       };
     });
-
-    setTimeout(() => {
-      if (!cookieConfirmado) {
-        enviarAlerta(`⛔ MECANISMO DO SUCESSO\nPÁGINA: ${checkoutURL}`);
-        document.getElementById("fallback").style.display = "block";
-      }
-    }, 8000);
   </script>
 
 </body>
